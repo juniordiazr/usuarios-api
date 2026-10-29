@@ -35,6 +35,7 @@ public class UserController {
             content = @Content(schema = @Schema(implementation = MessageResponse.class)))
     @ApiResponse(responseCode = "409", description = "El correo ya registrado",
             content = @Content(schema = @Schema(implementation = MessageResponse.class)))
+    
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponseDTO> register(@RequestBody UserRequestDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(request));

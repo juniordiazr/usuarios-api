@@ -44,13 +44,13 @@ Abrir http://localhost:5173 (Vite redirige `/api` al backend en el puerto 8080).
 ```bash
 curl -X POST http://localhost:8080/api/users/register \
   -H "Content-Type: application/json" \
-  -d '{"name":"Juan Rodriguez","email":"juan@rodriguez.cl","password":"Password1",
+  -d '{"name":"Juan Rodriguez","email":"juan@rodriguez.org","password":"hunter2",
        "phones":[{"number":"1234567","citycode":"1","contrycode":"57"}]}'
 ```
 Respuesta `201 Created`:
 ```json
 {
-  "id": "7d1c3b0e-...", "name": "Juan Rodriguez", "email": "juan@rodriguez.cl",
+  "id": "7d1c3b0e-...", "name": "Juan Rodriguez", "email": "juan@rodriguez.org",
   "phones": [{"number":"1234567","citycode":"1","contrycode":"57"}],
   "created": "2026-10-28T10:00:00", "modified": "2026-10-28T10:00:00",
   "last_login": "2026-10-28T10:00:00", "token": "eyJhbGciOiJIUzI1NiJ9.…", "isactive": true
@@ -68,30 +68,22 @@ Respuesta `201 Created`:
 
 ## Configuración
 En `backend/src/main/resources/application.properties`:
-- `app.security.password-regex`: regex configurable de la contraseña (por defecto 8–12 caracteres, con mayúscula, minúscula y número).
-- `app.validation.email-regex`: regex del correo (`aaaaaaa@dominio.cl`).
+- `app.security.password-regex`: regex configurable de la contraseña (por defecto 3–12 caracteres, con mayúscula, minúscula y número).
+- `app.validation.email-regex`: regex del correo (ej. `aaaaaaa@dominio.cl`).
 - `app.jwt.secret`: secreto HS256 (mínimo 32 caracteres). Se puede sobrescribir con la variable de entorno `JWT_SECRET`.
 - `app.jwt.expiration-minutes`: vigencia del JWT (por defecto 60).
 
 ## Diagrama de la solución
-```
-[Vue 3 (Vite :5173)] / [Postman / cURL]
-          │  POST /api/users/register (JSON)
-          ▼
-   [UserController]            <- @RestControllerAdvice: errores {"mensaje": "..."}
-          │
-          ▼
-   [UserService] (interfaz)
-          │
-          ▼
-   [UserServiceImpl] ── valida regex correo y contraseña (configurable)
-          │            ── existsByEmailIgnoreCase
-          │            ── BCrypt, id UUID, JWT (JwtService)
-          ▼
-   [UserRepository (Spring Data JPA)] ──► [H2 en memoria: users, phones]
-          │
-          ▼
-   UserResponseDTO (HTTP 201)  /  {"mensaje": "..."} (400 / 409 / 500)
+```mermaid
+flowchart LR
+    C[Cliente<br/>Vue 3 / cURL] --> UC[UserController<br/>API REST]
+    UC --> US[UserService<br/>Interfaz]
+    US --> USI[UserServiceImpl<br/>Reglas de negocio]
+    USI --> UR[UserRepository<br/>Spring Data JPA]
+    UR --> DB[(H2 en memoria<br/>users, phones)]
+    UC -.-> SW[Swagger<br/>Documentación]
+    USI -.-> JWT[JwtService<br/>Token JWT HS256]
+    UC -.-> EH[Manejo de errores<br/>RestControllerAdvice]
 ```
 
 ## Decisiones
