@@ -74,17 +74,7 @@ En `backend/src/main/resources/application.properties`:
 - `app.jwt.expiration-minutes`: vigencia del JWT (por defecto 60).
 
 ## Diagrama de la solución
-```mermaid
-flowchart LR
-    C[Cliente<br/>Vue 3 / cURL] --> UC[UserController<br/>API REST]
-    UC --> US[UserService<br/>Interfaz]
-    US --> USI[UserServiceImpl<br/>Reglas de negocio]
-    USI --> UR[UserRepository<br/>Spring Data JPA]
-    UR --> DB[(H2 en memoria<br/>users, phones)]
-    UC -.-> SW[Swagger<br/>Documentación]
-    USI -.-> JWT[JwtService<br/>Token JWT HS256]
-    UC -.-> EH[Manejo de errores<br/>RestControllerAdvice]
-```
+![Diagrama de la solución](docs/diagrama.png)
 
 ## Decisiones
 - La contraseña se guarda con BCrypt y nunca se devuelve en la respuesta.
