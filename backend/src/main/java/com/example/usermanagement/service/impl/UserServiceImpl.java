@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException("Los campos name, email y password son obligatorios", HttpStatus.BAD_REQUEST);
         }
         if (!emailPattern.matcher(request.getEmail()).matches()) {
-            throw new BusinessException("El formato del correo no es válido (debe ser aaaaaaa@dominio.cl)",
+            throw new BusinessException("El formato del correo no es válido (ej. aaaaaaa@dominio.cl)",
                     HttpStatus.BAD_REQUEST);
         }
         if (!passwordPattern.matcher(request.getPassword()).matches()) {

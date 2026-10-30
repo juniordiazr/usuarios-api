@@ -33,7 +33,7 @@ public class UserController {
     @ApiResponse(responseCode = "201", description = "Usuario creado")
     @ApiResponse(responseCode = "400", description = "Datos inválidos (correo, contraseña o campos faltantes)",
             content = @Content(schema = @Schema(implementation = MessageResponse.class)))
-    @ApiResponse(responseCode = "409", description = "El correo ya registrado",
+    @ApiResponse(responseCode = "409", description = "El correo ya esta registrado",
             content = @Content(schema = @Schema(implementation = MessageResponse.class)))
     
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
