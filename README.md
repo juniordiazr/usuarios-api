@@ -63,12 +63,12 @@ Respuesta `201 Created`:
 | Correo con formato inválido | 400 |
 | Contraseña no cumple la regex | 400 |
 | Campos obligatorios faltantes / JSON inválido | 400 |
-| `El correo ya registrado` | 409 |
+| `El correo ya esta registrado` | 409 |
 | Error inesperado | 500 |
 
 ## Configuración
 En `backend/src/main/resources/application.properties`:
-- `app.security.password-regex`: regex configurable de la contraseña (por defecto 3–12 caracteres, con mayúscula, minúscula y número).
+- `app.security.password-regex`: regex configurable de la contraseña (por defecto 3–12 caracteres, con minúscula y número).
 - `app.validation.email-regex`: regex del correo (ej. `aaaaaaa@dominio.cl`).
 - `app.jwt.secret`: secreto HS256 (mínimo 32 caracteres). Se puede sobrescribir con la variable de entorno `JWT_SECRET`.
 - `app.jwt.expiration-minutes`: vigencia del JWT (por defecto 60).
